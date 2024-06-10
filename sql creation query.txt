@@ -1,0 +1,393 @@
+CREATE TABLE `person` 
+(`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `dob` TEXT NOT NULL, `phone` INTEGER NOT NULL, PRIMARY KEY (`id`));
+
+CREATE TABLE 'SALES' ('id' INTEGER NOT NULL, 'PRODUCT' TEXT NOT NULL, 'QUANTITY' INTEGER NOT NULL,
+                     'UNIT_PRICE' INTEGER NOT NULL, PRIMARY KEY ('id'));
+
+INSERT INTO person VALUES('1','ross','20-07-2010','1234567890'),('2','joey','27-01-2017','987654321');
+
+ 
+UPDATE person SET name = 'CHANDLER' WHERE id = '2';
+
+INSERT INTO person VALUES('3','JOEY','24-12-2001','9283738222'),
+                        ('4','RACHEL','11-02-2000','87364643829'),
+	--	                    ('5','MONICA','30-02-2000','3783638282'),
+	   --					 ('6','PHOEBE','23-02-2000','3783992021');
+
+INSERT INTO SALES  
+VALUES 
+    (1, 'Product A', 10, 20.50),
+    (2, 'Product B', 15, 15.75),
+    (3, 'Product C', 20, 10.00),
+    (4, 'Product D', 8, 30.25),
+    (5, 'Product E', 12, 18.90),
+    (6, 'Product F', 25, 12.60);
+	   
+SELECT *
+FROM person;
+
+SELECT name,dob
+FROM person;
+
+SELECT*
+FROM person
+ORDER BY id DESC;
+
+SELECT * 
+FROM SALES
+WHERE NOT PRODUCT='Product C';
+
+SELECT *
+FROM person 
+WHERE name NOT LIKE 'r%';
+
+SELECT *
+FROM SALES 
+WHERE QUANTITY NOT BETWEEN 5 AND 10;
+
+SELECT *
+FROM SALES 
+WHERE PRODUCT NOT IN ('Product A','Product D','Product C');
+
+SELECT*
+FROM sales 
+WHERE NOT UNIT_PRICE <15;
+
+SELECT*
+FROM sales 
+WHERE UNIT_PRICE <15;
+
+INSERT INTO person (name,phone)
+            VALUES ('toto','8373837282');
+
+INSERT INTO person (name,phone)
+VALUES ('john','738337282'),
+       ('amir','738227382'),
+	   ('sharukh','635482921'),
+	   ('salman','7389100123');
+
+-- finding null value
+SELECT dob,
+       name,
+	   phone
+FROM person 
+WHERE dob IS NULL;
+
+CREATE TABLE `INFO` 
+(`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `dob` TEXT NOT NULL, `phone` INTEGER NOT NULL, PRIMARY KEY (`id`)); 
+
+INSERT INTO INFO VALUES (1,'abc','10-10-1999','93783930202'),
+                        (2,'def','11-11-1999','27263282900');
+						
+DELETE FROM INFO
+
+DROP TABLE INFO
+
+SELECT *
+FROM person
+ORDER BY ID DESC
+LIMIT 3;
+
+
+SELECT *
+FROM person
+ORDER BY ID 
+LIMIT 3 OFFSET 2;
+
+SELECT *
+FROM SALES 
+WHERE QUANTITY = (SELECT MIN(QUANTITY) FROM SALES)
+
+SELECT COUNT (DISTINCT dob)FROM person
+
+SELECT SUM (QUANTITY)
+FROM SALES 
+
+SELECT SUM (QUANTITY)
+FROM SALES 
+WHERE id BETWEEN 4 AND 6;
+
+SELECT AVG(QUANTITY)
+FROM SALES 
+
+SELECT *
+FROM person
+WHERE name LIKE '%a%'; 
+
+SELECT *
+FROM person
+WHERE name LIKE 'M_N__A';
+
+SELECT * 
+FROM SALES
+WHERE QUANTITY IN (10,12,20);
+
+SELECT * 
+FROM SALES
+WHERE QUANTITY IN (10,12,20);
+
+SELECT * 
+FROM person
+WHERE name IN ('ross','RACHEL','PHOEBE');
+
+SELECT * 
+FROM person
+WHERE dob NOT IN ('11-02-2000','23-02-2000','12-03-2012');
+
+SELECT * 
+FROM SALES
+WHERE QUANTITY NOT IN (10,12,20);
+
+SELECT * 
+FROM SALES 
+WHERE ID BETWEEN 1 AND 4
+
+SELECT * 
+FROM SALES 
+WHERE ID NOT BETWEEN 1 AND 4
+
+SELECT *
+FROM SALES 
+WHERE QUANTITY BETWEEN 1 AND 15 AND ID IN (1,2,3);
+
+SELECT *
+FROM SALES 
+WHERE QUANTITY BETWEEN 8 AND 15 AND ID BETWEEN 5 AND 6;
+
+SELECT * 
+FROM SALES
+WHERE UNIT_PRICE BETWEEN 0 AND 25
+ORDER BY QUANTITY
+
+UPDATE person
+SET dob = CASE id
+    WHEN 1 THEN '1997-05-12'
+    WHEN 2 THEN '2001-07-19'
+    WHEN 3 THEN '2003-11-25'
+    WHEN 4 THEN '1998-02-16'
+    WHEN 5 THEN '2005-08-23'
+    WHEN 6 THEN '2010-01-05'
+    WHEN 7 THEN '1999-09-30'
+    WHEN 8 THEN '2013-06-14'
+END
+WHERE id BETWEEN 1 AND 8;
+
+SELECT * 
+FROM person
+WHERE dob BETWEEN '1995-01-01' AND '2005-01-01';
+
+SELECT
+      QUANTITY   'total price'
+FROM SALES
+
+SELECT QUANTITY,
+       UNIT_PRICE
+FROM SALES AS METRICS 
+
+SELECT 
+      PRODUCT AS items,
+	  UNIT_PRICE AS PRICE
+FROM SALES;
+
+SELECT 
+     PRODUCT AS "the ordered item"
+FROM SALES
+
+joining 2 col in one ;;;
+SELECT id,
+       (name||','||dob) AS info 
+FROM person
+
+SELECT name FROM person
+UNION 
+SELECT PRODUCT FROM SALES;
+
+SELECT name FROM person
+UNION ALL
+SELECT name FROM person;
+
+SELECT 
+      COUNT(dob),name,phone
+FROM person 
+GROUP BY name
+
+SELECT 
+      COUNT(QUANTITY),PRODUCT,id
+FROM SALES
+GROUP BY PRODUCT
+HAVING COUNT(QUANTITY)<2;
+
+SELECT id,PRODUCT
+FROM SALES
+WHERE id IN(SELECT id FROM SALES WHERE QUANTITY = 10);
+
+to copy the table outlier:
+
+CREATE TABLE student AS
+SELECT * FROM person WHERE 1=0;
+
+to insert to the table:
+
+INSERT INTO student
+SELECT * FROM person;
+
+To delete the dats from the table:
+DELETE FROM tabname;
+
+IF conditional statement:
+
+SELECT empl_id, name,
+CASE
+    WHEN
+empl_id > 22 THEN 'The employee id is greater than 22'
+    WHEN empl_id = 174 THEN 'The employee id is equal to 174'
+    ELSE 'Other employee id'
+END AS employee_ids FROM person;
+
+to set columns null
+UPDATE person
+SET age = NULL;
+
+SELECT name, id * (id + IFNULL(age, 2))
+FROM person;
+
+creating a procedure:
+
+CREATE PROCEDURE all_details
+AS
+SELECT * FROM customers
+GO;
+
+Single line comment
+ 
+--SELECT * FROM Customers;
+ 
+Multiple line comment
+ 
+/* SELECT * FROM Customers; */
+
+--ARITHEMETIC
+
+SELECT * FROM SALES
+WHERE  QUANTITY = 10;
+
+SELECT * FROM SALES
+WHERE UNIT_PRICE > 15;
+ 
+ 
+SELECT * FROM SALES
+WHERE QUANTITY < 15;
+ 
+SELECT * FROM SALES
+WHERE UNIT_PRICE >= 12.6;
+ 
+ 
+SELECT * FROM SALES
+WHERE QUANTITY <= 20;
+
+SELECT * FROM SALES
+WHERE UNIT_PRICE <> 10;
+
+UPDATE employee
+SET salary = 500
+WHERE emp_id = 1;
+
+CREATE TABLE Footwears (
+    id int NOT NULL,
+    name varchar(255) NOT NULL,
+    email varchar(255),
+    age int,
+    CHECK (age>=18)
+);
+INSERT INTO Footwears (id, name, email, age)
+VALUES (3, 'George', 'george@gmail.com', 19);
+
+INSERT INTO food (ID,F_id,Type)
+VALUES(1,1,'chapathi'),(2,2,'idli');
+
+SELECT name,Type
+FROM person 
+JOIN Food 
+ON person.id = Food.F_id
+
+
+CREATE TABLE Staff (
+    ID int NOT NULL,
+    name varchar(255) NOT NULL,
+    email varchar(255),
+    age int,
+    petname varchar(255) DEFAULT 'good person'
+);
+
+INSERT INTO Staff (id, name, email, age,petname)
+VALUES (3, 'meorge', 'george@gmail.com', 17,'good person');
+
+CREATE TABLE Woods (
+    ID int NOT NULL,
+    Type int NOT NULL,
+    purchase_date date DEFAULT CURRENT_DATE
+);
+UPDATE woods SET purchase_date = '2024-06-07'
+WHERE id = 4
+
+CREATE TABLE performers (
+    perf_id INTEGER PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    age INT
+);
+
+
+CREATE VIEW [person details] AS
+SELECT name, phone
+FROM person
+WHERE id < 100;
+
+SELECT *
+FROM [person details]
+CREATE VIEW IF NOT EXISTS
+"Student details" AS
+SELECT *
+FROM person
+WHERE id <= 10;
+
+SELECT *
+FROM [Student details]
+names =
+getRequestString("Name");
+result = "SELECT * FROM student
+WHERE name = " + names;
+
+import sqlite3
+
+# Assume 'username' and 'password' are inputs from the
+user
+username = input("Enter username: ")
+
+password = input("Enter password: ")
+
+# Connect to the database
+
+conn = sqlite3.connect('example.db')
+
+c = conn.cursor()
+
+# Vulnerable query
+
+query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+
+c.execute(query)
+
+# Fetch results
+
+result = c.fetchone()
+if result:
+    print("Login successful!")
+else:
+    print("Login failed!")
+
+# Close the connection
+
+conn.close(
+)
+
